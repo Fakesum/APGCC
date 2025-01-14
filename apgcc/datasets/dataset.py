@@ -142,7 +142,7 @@ def load_data(img_gt_path, train):
     img = cv2.imread(img_path)
     img = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
     # load ground truth points
-    points = [tuple(x[0], x[1]) for x in loadmat(gt_path)["image_info"][0][0][0][0][0]]
+    points = [(x[0], x[1]) for x in loadmat(gt_path)["image_info"][0][0][0][0][0]]
     return img, np.array(points)
 
 # random crop augumentation
