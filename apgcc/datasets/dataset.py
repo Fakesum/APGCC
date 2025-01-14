@@ -5,6 +5,7 @@ import numpy as np
 from torch.utils.data import Dataset
 from PIL import Image
 import cv2
+from scipy.io import loadmat
 
 class ImageDataset(Dataset):
     def __init__(self, data_root, transform=None, train=False, aug_dict=None):
@@ -141,12 +142,7 @@ def load_data(img_gt_path, train):
     img = cv2.imread(img_path)
     img = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
     # load ground truth points
-    points = []
-    with open(gt_path) as f_label:
-        for line in f_label:
-            x = float(line.strip().split(' ')[0])
-            y = float(line.strip().split(' ')[1])
-            points.append([x, y])
+    points = [tuple(x[0], x[1]) for x in loadmat(gt_path)["image_info"][0][0][0][0][0]]
     return img, np.array(points)
 
 # random crop augumentation
